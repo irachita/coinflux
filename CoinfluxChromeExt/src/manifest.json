@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "Coinflux price notifier",
+  "description": "Allows user to set notifications based on the prices from Coinflux",
+  "version": "1.0",
+	
+"icons": { "16": "icons/iconCoinflux.png",
+           "32": "icons/iconCoinflux-32.ico"},
+          
+  "browser_action": {
+    "default_icon": "icons/iconCoinflux.png",
+    "default_popup": "popup.html",
+    "default_title": "Coinflux price notifier"
+  },
+  "background": {
+    "scripts": [ "coinflux.js", "alarmCheckPrices.js"]
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms",
+    "notifications",
+    "https://coinflux.com/"
+  ]
+ }

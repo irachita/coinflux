@@ -1,0 +1,6 @@
+
+
+updateExtensionIcon();
+queryCoinfluxTabForPrices();
+addPriceNotifications();
+

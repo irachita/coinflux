@@ -1,0 +1,191 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+<head>
+<title>Coinflux price notifier</title>
+<style type="text/css">
+body {
+	margin: 10px;
+	white-space: nowrap;
+}
+
+h1 {
+	font-size: 15px;
+}
+
+#container {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-color: #999;
+}
+
+.tg td {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	padding: 10px 5px;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	word-break: normal;
+	border-color: #999;
+	color: #444;
+	background-color: #F7FDFA;
+}
+
+.tg th {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	padding: 10px 5px;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	word-break: normal;
+	border-color: #999;
+	color: #fff;
+	background-color: #26ADE4;
+}
+
+.tg .tgHeader {
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif !important;;
+	vertical-align: top;
+	text-align: center;
+}
+
+.tg .tgPrice {
+	vertical-align: top;
+	text-align: right;
+}
+
+.tg .tgType {
+	vertical-align: top;
+	text-align: center;
+}
+
+#formLabel {
+	width: 40px;
+	display: inline-block;
+	margin-bottom: 2px;
+}
+
+.formField {
+	width: 70px;
+	margin-bottom: 2px;
+}
+.formFieldCombo {
+	width: 90px;
+	margin-bottom: 2px;
+}
+
+#btnWatcher {
+	background-color: #26ADE4;
+	border: none;
+	color: white;
+	padding: 5px 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin-top: 5px;
+}
+
+#btnOpenCoinfluxTab {
+	background-color: #f44336;
+	border: none;
+	color: white;
+	padding: 5px 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+</style>
+
+<!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+<script src="main.js"></script>
+<script src="coinflux.js"></script>
+<script src="tableWatchers.js"></script>
+<script src="alarmCheckPrices.js"></script>
+</head>
+
+<body>
+	<h1 style="margin-bottom: 2px;">Coinflux price notifier</h1>
+	<hr style="margin-top: 1px; margin-bottom: 15px;">
+	<button id="btnOpenCoinfluxTab" style="block:none;">Coinflux tab needed. Click to open it!</button>
+	
+	<form>
+		<span id="formLabel">Coin: </span><select id="dropdownCoin"
+			class="formFieldCombo">
+			<option selected disabled>Select</option>
+			<option value="Btc">Bitcoin</option>
+			<option value="Eth">Ethereum</option>
+			<option value="Ltc">Litecoin</option>
+			<option value="Etc">ETH Classic</option>
+		</select> <br> <span id="formLabel">Type: </span><select id="dropdownType"
+			class="formFieldCombo">
+			<option disabled>Type</option>
+			<option selected value="Buy">Buy</option>
+			<option value="Sell">Sell</option>
+		</select> <br> <span id="formLabel"> Price: </span><input id="inputPrice"
+			class="formField" /> <br> <span id="formLabel"
+			title="Range precision">&plusmn;%: </span><input type="number"
+			min="0" max="100" id="precisionPrice" class="formField"
+			title="Range precision" value="1" /> <span id="formLabel" style="width: 25px;">Low</span> <input id="inputPriceLow"
+			class="formField"/> <span id="formLabel" style="width: 25px;">High</span> <input id="inputPriceHigh"
+			class="formField"/>
+		<br>
+		<button id="btnWatcher">Add watcher</button>
+	</form>
+
+	<div style="margin-top: 20px; max-height: 300px; overflow: auto;"
+		id="containerWatchers">Currently there are no watchers set.</div>
+
+
+	<!-- <table class="tg">
+		<tr>
+			<th class="tgHeader">Coin</th>
+			<th class="tgHeader">Type</th>
+			<th class="tgHeader">Threshold</th>
+		</tr>
+		<tr>
+			<td class="tgHeader">Bitcoin</td>
+			<td class="tgPrice" id="priceBtcSell"></td>
+			<td class="tgPrice" id="priceBtcBuy"></td>
+		</tr>
+		<tr>
+			<td class="tgHeader">Ethereum</td>
+			<td class="tgPrice" id="priceEthSell"></td>
+			<td class="tgPrice" id="priceEthBuy"></td>
+		</tr>
+		<tr>
+			<td class="tgHeader">Litecoin</td>
+			<td class="tgPrice" id="priceLtcSell"></td>
+			<td class="tgPrice" id="priceLtcBuy"></td>
+		</tr>
+		<tr>
+			<td class="tgHeader">ETH Classic</td>
+			<td class="tgPrice" id="priceEtcSell"></td>
+			<td class="tgPrice" id="priceEtcBuy"></td>
+		</tr>
+	</table> -->
+
+</body>
+</html>
