@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	addDropdownEventListener();
 	addWatcherBtnEventListener();
 	addOpenCoinfluxBtnEventListener();
+	
+	displayIntervalSettings();
+	addIntervalSettingsEventListener();
+	
 	addStorageListener();
 	
 });
@@ -98,6 +102,61 @@ function addOpenCoinfluxBtnEventListener() {
     });
 }
 
+function displayIntervalSettings() {
+	var inputIntervalCheck = document.getElementById("intervalCheck");
+	var inputIntervalNotify = document.getElementById("intervalNotify");
+	
+	chrome.storage.sync.get("intervalCheck", function(obj) {
+		var intervalCheck = INTERVAL_CHECK_DEFAULT;
+		if (obj != null && obj["intervalCheck"]!=null) {
+			var intervalCheck = Number(obj["intervalCheck"]);
+			if (isNaN(intervalCheck)) {
+				intervalCheck = INTERVAL_CHECK_DEFAULT;
+			}
+		}
+		
+		inputIntervalCheck.value = intervalCheck;
+	});
+	chrome.storage.sync.get("intervalNotify", function(obj) {
+		var intervalNotify = 60;
+		if (obj != null && obj["intervalNotify"]!=null) {
+			var intervalNotify = Number(obj["intervalNotify"]);
+			if (isNaN(intervalNotify)) {
+				intervalNotify = 60;
+			}
+		}
+		
+		inputIntervalNotify.value = intervalNotify;
+	});
+}
+
+function addIntervalSettingsEventListener() {
+	var inputIntervalCheck = document.getElementById("intervalCheck");
+	inputIntervalCheck.addEventListener('change', function() {
+		var intervalCheckAsString = inputIntervalCheck.value;
+		var intervalCheck = Number(intervalCheckAsString);
+		if (isNaN(intervalCheck)) {
+			intervalCheck = INTERVAL_CHECK_DEFAULT;
+		}
+		inputIntervalCheck.value = intervalCheck;
+		
+		addPriceNotifications(intervalCheck);
+		chrome.storage.sync.set({"intervalCheck": intervalCheck});
+	});
+
+	var inputIntervalNotify = document.getElementById("intervalNotify");
+	inputIntervalNotify.addEventListener('change', function() {
+		var intervalNotifyAsString = inputIntervalNotify.value;
+		var intervalNotify = Number(intervalNotifyAsString);
+		if (isNaN(intervalNotify)) {
+			intervalNotify = 60;
+		}
+		inputIntervalNotify.value = intervalNotify;
+		
+		chrome.storage.sync.set({"intervalNotify": intervalNotify});
+	});
+}
+
 function addWatcherBtnEventListener() {
 	var btnWatcher = document.getElementById("btnWatcher");
 	btnWatcher.addEventListener('click', function() {
@@ -127,12 +186,12 @@ function addWatcherBtnEventListener() {
 		
 		if (isNaN(priceLow)) {
 			priceLow = priceVal - (priceVal * precisionPriceVal  / 100);
-			priceLow = priceLow.toFixed(2);
+			priceLow = priceLow.toFixed(0);
 			priceLow = parseFloat(priceLow);
 		}
 		if (isNaN(priceHigh)) {
 			priceHigh = priceVal + (priceVal * precisionPriceVal  / 100);
-			priceHigh = priceHigh.toFixed(2);
+			priceHigh = priceHigh.toFixed(0);
 			priceHigh = parseFloat(priceHigh);
 		}
 		
@@ -179,22 +238,22 @@ function addStorageListener() {
 		if (changes.length == 0) {
 			containerWatchers.innerHTML = MSG_NO_WATCHERS;
 		} else {
-			console.log("Displaying watchers");
-			var content = buildWatchersTableHeader();
 	        for (key in changes) {
 		        	if (key!==KEY_WATCHERS) {
 		        		continue;
 		        	}
 		        	var watchers = changes[key].newValue;
 		        	if (watchers.constructor === Array) {
+		        		console.log("Displaying watchers");
+		        		var content = buildWatchersTableHeader();
 		        		content += buildWatchersTableRows(watchers);
+		        		content +='</table>';
+		        		containerWatchers.innerHTML=content;
+		        		console.log("Finished displaying watchers");
 		        	} else {
 		        		console.log("watchers from storage is not an array");
 		        	}
 	        }
-	        content +='</table>';
-	        containerWatchers.innerHTML=content;
-	        console.log("Finished displaying watchers");
 	        addListnerRemoveWatcher();
 		}
       });
@@ -241,10 +300,10 @@ function setInputPriceRange() {
 		var priceValLow = priceVal;
 		var priceValHigh = priceVal;
 		priceValLow = priceVal - (priceVal * precisionPriceVal  / 100);
-		priceValLow = priceValLow.toFixed(2);
+		priceValLow = priceValLow.toFixed(0);
 		priceValLow = parseFloat(priceValLow);
 		priceValHigh = priceVal + (priceVal * precisionPriceVal  / 100);
-		priceValHigh = priceValHigh.toFixed(2);
+		priceValHigh = priceValHigh.toFixed(0);
 		priceValHigh = parseFloat(priceValHigh);
 
 		var inputPriceLow = document.getElementById("inputPriceLow");
@@ -252,6 +311,5 @@ function setInputPriceRange() {
 		inputPriceLow.value = priceValLow;
 		inputPriceHigh.value = priceValHigh;
 	}
-	
 }
 

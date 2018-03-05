@@ -83,6 +83,7 @@ h1 {
 	width: 70px;
 	margin-bottom: 2px;
 }
+
 .formFieldCombo {
 	width: 90px;
 	margin-bottom: 2px;
@@ -129,8 +130,9 @@ h1 {
 <body>
 	<h1 style="margin-bottom: 2px;">Coinflux price notifier</h1>
 	<hr style="margin-top: 1px; margin-bottom: 15px;">
-	<button id="btnOpenCoinfluxTab" style="block:none;">Coinflux tab needed. Click to open it!</button>
-	
+	<button id="btnOpenCoinfluxTab" style="display: none;">Coinflux
+		tab needed. Click to open it!</button>
+
 	<form>
 		<span id="formLabel">Coin: </span><select id="dropdownCoin"
 			class="formFieldCombo">
@@ -148,44 +150,24 @@ h1 {
 			class="formField" /> <br> <span id="formLabel"
 			title="Range precision">&plusmn;%: </span><input type="number"
 			min="0" max="100" id="precisionPrice" class="formField"
-			title="Range precision" value="1" /> <span id="formLabel" style="width: 25px;">Low</span> <input id="inputPriceLow"
-			class="formField"/> <span id="formLabel" style="width: 25px;">High</span> <input id="inputPriceHigh"
-			class="formField"/>
-		<br>
+			title="Range precision" value="1" /> <span id="formLabel"
+			style="width: 25px;">Low</span> <input id="inputPriceLow"
+			class="formField" /> <span id="formLabel" style="width: 25px;">High</span>
+		<input id="inputPriceHigh" class="formField" /> <br>
 		<button id="btnWatcher">Add watcher</button>
 	</form>
 
+
+	<br />Check prices every
+	<input id="intervalCheck" type="number" min="0" max="600"
+		style="width: 35px;" value="10" /> minutes, but notify only once
+	<br />in
+	<input id="intervalNotify" type="number" min="0" max="600"
+		style="width: 35px;" value="60" /> minutes, for each of the watchers
+	below.
+
 	<div style="margin-top: 20px; max-height: 300px; overflow: auto;"
 		id="containerWatchers">Currently there are no watchers set.</div>
-
-
-	<!-- <table class="tg">
-		<tr>
-			<th class="tgHeader">Coin</th>
-			<th class="tgHeader">Type</th>
-			<th class="tgHeader">Threshold</th>
-		</tr>
-		<tr>
-			<td class="tgHeader">Bitcoin</td>
-			<td class="tgPrice" id="priceBtcSell"></td>
-			<td class="tgPrice" id="priceBtcBuy"></td>
-		</tr>
-		<tr>
-			<td class="tgHeader">Ethereum</td>
-			<td class="tgPrice" id="priceEthSell"></td>
-			<td class="tgPrice" id="priceEthBuy"></td>
-		</tr>
-		<tr>
-			<td class="tgHeader">Litecoin</td>
-			<td class="tgPrice" id="priceLtcSell"></td>
-			<td class="tgPrice" id="priceLtcBuy"></td>
-		</tr>
-		<tr>
-			<td class="tgHeader">ETH Classic</td>
-			<td class="tgPrice" id="priceEtcSell"></td>
-			<td class="tgPrice" id="priceEtcBuy"></td>
-		</tr>
-	</table> -->
 
 </body>
 </html>
