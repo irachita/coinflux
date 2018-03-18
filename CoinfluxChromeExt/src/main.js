@@ -211,6 +211,7 @@ function addWatcherBtnEventListener() {
         	     	}, function(notificationId) {});
 			} else {
 				watchers.push({coin:dropdownCoinVal, type:dropdownTypeVal, priceLow:priceLow,priceHigh:priceHigh });
+				sortWatchers(watchers);
 				chrome.storage.sync.set({"watchers": watchers}, function() {
 					console.log("watcher added");
 				});
@@ -230,6 +231,28 @@ function existsWatcher(watchers, dropdownCoinVal, dropdownTypeVal, priceLow, pri
         	}
     }
 	return watcherExists;
+}
+
+function sortWatchers(watchers) {
+	var compare = function (watcher1,watcher2) {
+		  if (watcher1.coin < watcher2.coin) {
+		    return -1;
+		  }
+		  if (watcher1.coin > watcher2.coin) {
+		    return 1;
+		  }
+		  
+		  if (watcher1.coin == watcher2.coin) {
+			  if (watcher1.priceLow < watcher2.priceLow) {
+				  return -1;
+			  } else {
+				  return 1;
+			  }
+		  }
+		  
+		  return 0;
+		}
+	watchers.sort(compare);
 }
 
 function addStorageListener() {
