@@ -28,8 +28,8 @@ function buildWatchersTableHeader() {
 	content += '<tr>';
 	content += '<th class="tgHeader">Coin</th>';
 	content += '<th class="tgHeader">Type</th>';
-	content += '<th class="tgHeader">Price now</th>';
 	content += '<th class="tgHeader">Notify when btw.</th>';
+	content += '<th class="tgHeader">Price now</th>';
 	content += '<th></th>';
 	content += '</tr>';
 	return content;
@@ -54,10 +54,10 @@ function buildWatchersTableRows(watchers) {
 				+ '</td>';
 		var currentPriceInCoinflux = getCurrentPriceInCoinflux(watcher.coin,
 				watcher.type);
-		content += '<td class="tgPrice" id="priceCoinflux">'
-				+ currentPriceInCoinflux + '</td>';
 		content += '<td class="tgPrice" id="priceBuy">' + priceLow
 				+ ' - ' + priceHigh + '</td>';
+		content += '<td class="tgPrice" id="priceCoinflux">'
+			+ currentPriceInCoinflux + '</td>';
 		content += '<td><img src="icons/minus_button-16.png" quickSearch="'
 				+ quickSearch + '"></td>';
 		content += '</tr>';
